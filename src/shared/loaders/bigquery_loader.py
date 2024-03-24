@@ -8,7 +8,7 @@ class Loader:
         client = bigquery.Client()
         job_config = bigquery.LoadJobConfig(
             schema=[
-                bigquery.SchemaField("nombre_de_la_entidad", bigquery.enums.SqlTypeNames.STRING),
+                bigquery.SchemaField("nombre_entidad", bigquery.enums.SqlTypeNames.STRING),
                 bigquery.SchemaField("nivel_entidad", bigquery.enums.SqlTypeNames.STRING),
             ],
             write_disposition="WRITE_TRUNCATE",
@@ -18,4 +18,4 @@ class Loader:
         )
         job.result()
         table = client.get_table(table_id)
-        return f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_id}"
+        print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_id}")
