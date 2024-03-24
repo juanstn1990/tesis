@@ -5,7 +5,7 @@ import os
 class SocrataData:
     def __init__(self):
         self.api_key = os.getenv("TOKEN_SOCRATA")
-        self.url = "https://www.datos.gov.co/resource/rpmr-utcd.json?municipio_entidad=CHISCAS"
+        self.url = "https://www.datos.gov.co/resource/rpmr-utcd.json?municipio_entidad=TABIO"
         self.limit = 1000
         self.offset = 0
         self.all_data = pd.DataFrame()
