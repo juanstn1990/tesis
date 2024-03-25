@@ -5,7 +5,9 @@ import os
 class SocrataData:
     def __init__(self):
         self.api_key = os.getenv("TOKEN_SOCRATA")
-        self.url='https://www.datos.gov.co/resource/f789-7hwg.json?municipio_entidad=Tabio'
+        self.url='https://www.datos.gov.co/resource/f789-7hwg.json?departamento_entidad=Cundinamarca'
+        #self.url="https://www.datos.gov.co/resource/f789-7hwg.json?$where=municipio_entidad in ('Tabio', 'Tenjo', 'Cajicá')"
+
         self.limit = 1000
         self.offset = 0
         
@@ -23,6 +25,7 @@ class SocrataData:
             if response.status_code == 200:
                 data = response.json()
                 df = pd.DataFrame(data)
+                print(df)
                 all_data = pd.concat([all_data, df], ignore_index=True)
                 if len(df) < self.limit:
                     break
