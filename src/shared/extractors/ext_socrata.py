@@ -25,7 +25,6 @@ class SocrataData:
             if response.status_code == 200:
                 data = response.json()
                 df = pd.DataFrame(data)
-                print(df)
                 all_data = pd.concat([all_data, df], ignore_index=True)
                 if len(df) < self.limit:
                     break
