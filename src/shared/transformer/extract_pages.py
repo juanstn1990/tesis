@@ -1,24 +1,39 @@
 import pytesseract
 from PIL import Image
 from pdf2image import convert_from_path
+from PyPDF2 import PdfWriter, PdfReader
+import os
 
+DOWNLOAD_FOLDER = os.environ["DOWNLOAD_FOLDER"]
 
 def ocr_pdf_con_tesseract(pdf_path, medicamentos):
     paginas = convert_from_path(pdf_path)
-    texto_extraido = ''
     pagina_number = 1
+    pages_list = []
     for pagina in paginas:
         texto = pytesseract.image_to_string(pagina)
         texto = texto.upper()
         if any(medicamento in texto for medicamento in medicamentos):
-            print(f"Encontrado en la página {pagina_number}")
+            pages_list.append(pagina_number)
         pagina_number += 1
-    return texto_extraido
+    return pages_list
 
+def select_pages_pdf(filename, first_page, last_page):
+    first_page = first_page - 1
+    last_page = last_page - 1   
+    infile = PdfReader(os.path.join(DOWNLOAD_FOLDER, filename))
+    output = PdfWriter()
+    for i in range(first_page, last_page + 1):
+        p = infile.pages[int(i)]
+        output.add_page(p)
+    with open(os.path.join(DOWNLOAD_FOLDER, filename), "wb") as f:
+        output.write(f)
 
-medicametos = ['ACETAMINOFEN', 'ACICLOVIR', 'ALBENDAZOL', 'AMOXICILINA', 'AMPICILINA', 'AZITROMICINA', 'BENZATINA', 'BENZOATO', 'BENZOIL', 'BENZOILO', 'TRAZADONA']
+def main():
+    medicametos = ['ACETAMINOFEN', 'ACICLOVIR', 'ALBENDAZOL', 'AMOXICILINA', 'AMPICILINA', 'AZITROMICINA', 'BENZATINA', 'BENZOATO', 'BENZOIL', 'BENZOILO', 'TRAZADONA']
+    ruta_imagen = "/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf"
+    pages_list = ocr_pdf_con_tesseract(ruta_imagen, medicametos)
+    select_pages_pdf('C_PROCESO_21-12-12645260_276001622_98573431.pdf', min(pages_list), max(pages_list))
 
-ruta_imagen = "/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf"
-texto_extraido = ocr_pdf_con_tesseract(ruta_imagen, medicametos)
-print("Texto extraído:")
-print(texto_extraido)
+if __name__ == "__main__":
+    main()
