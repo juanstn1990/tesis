@@ -48,4 +48,4 @@ def main(url, constancia):
     print(document)
 
 if __name__ == '__main__':
-    main('https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia=21-12-12645260', '21-12-12645260')
+    main('https://www.contratos.gov.co/consultas/detalleProceso.do?numConstancia=21-4-11507224', '21-4-11507224')
