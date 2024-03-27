@@ -1,4 +1,4 @@
-from src.shared.extractors import ext_socrata
+from shared.extractors.api import ext_socrata
 from src.shared.loaders import bigquery_loader
 
 
