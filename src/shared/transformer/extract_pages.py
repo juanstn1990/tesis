@@ -31,10 +31,10 @@ def select_pages_pdf(filename, first_page, last_page):
 
 def main():
     medicametos = ['ACETAMINOFEN', 'ACICLOVIR', 'ALBENDAZOL', 'AMOXICILINA', 'AMPICILINA', 'AZITROMICINA', 'BENZATINA', 'BENZOATO', 'BENZOIL', 'BENZOILO', 'TRAZODONA', 'ZIDOVUDINA']
-    ruta_imagen = "/tmp/C_PROCESO_21-4-11507224_22587527_83602193.pdf"
+    ruta_imagen = "/tmp/C_PROCESO_19-4-9750833_22587527_61531123.pdf"
     pages_list = ocr_pdf_con_tesseract(ruta_imagen, medicametos)
     print(pages_list)
-    select_pages_pdf('C_PROCESO_21-4-11507224_22587527_83602193.pdf', min(pages_list), max(pages_list))
+    select_pages_pdf('C_PROCESO_19-4-9750833_22587527_61531123.pdf', min(pages_list), max(pages_list))
 
 if __name__ == "__main__":
     main()
