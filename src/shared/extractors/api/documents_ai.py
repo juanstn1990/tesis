@@ -87,7 +87,7 @@ def process_document_form_sample(
 
                 data_list = ast.literal_eval(respuesta)
                 df = pd.DataFrame(data_list)
-                print(df)
+                df['file_path'] = file_path
                 all_df = pd.concat([all_df, df], ignore_index=True)
     return all_df
 

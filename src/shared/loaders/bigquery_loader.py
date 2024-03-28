@@ -6,10 +6,10 @@ class Loader:
     def load_bigquery_df(self, dataframe, table_id):
         client = bigquery.Client()
         job_config = bigquery.LoadJobConfig(
-            schema=[
+        """    schema=[
                 bigquery.SchemaField("nombre_entidad", bigquery.enums.SqlTypeNames.STRING),
                 bigquery.SchemaField("nivel_entidad", bigquery.enums.SqlTypeNames.STRING),
-            ],
+            ],"""
             write_disposition="WRITE_TRUNCATE",
         )
         job = client.load_table_from_dataframe(
