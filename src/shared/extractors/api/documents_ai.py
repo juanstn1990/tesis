@@ -7,16 +7,17 @@ from google.cloud import documentai_v1 as documentai
 import pandas as pd
 from shared.transformer.chat_gpt import get_completion
 import ast
+from src.shared.loaders import bigquery_loader
 
 project_id = 'utadeo-418221'
 location = 'us'
 processor_id = '96b58070c12117b2'
-file_path = r'/tmp/C_PROCESO_21-4-11507224_22587527_83602193.pdf'
+file_path = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf'
 mime_type = 'application/pdf'
 processor_version = 'pretrained-form-parser-v2.1-2023-06-26'
 
 
-def buscar_valores(columnes, find_columns):
+def find_column_names(columnes, find_columns):
     for valor in find_columns:
         if valor in columnes:
             return True
@@ -44,7 +45,7 @@ def process_document_form_sample(
             num_columns = len(table.header_rows[0].cells)
             columnes = print_table_rows(table.header_rows, text)
             find_columns = ['ITEM','ITEMS','DESCRIPCION','PRESENTACION','LABORATORIO','VALOR','NOMBRE','CONCENTRACION','UNITARIO','DESCRIPCIÓN','CONCENTRACIÓN']
-            value_columns = buscar_valores(columnes, find_columns)
+            value_columns = find_column_names(columnes, find_columns)
 
             if num_columns > 2:
                 if value_columns:
@@ -56,19 +57,21 @@ def process_document_form_sample(
 
                 respuesta = get_completion(f"""
                 organiza esto en un dataframe, crea la siguientes columnas
-                item, Descripcion, Concentracion, presentacion, laboratorio y valor, si no existe el dato para la columna concentracion intenta extraerlo de la descripcion,
+                item, Descripcion, Concentracion, laboratorio , valor
+                y forma farmaceutica (tableta, capsula, jarave, solucion oral, solucion inyectable, crema, gel, polvo, suspension, gotas, ovulo, supositorio, inyectable, inhalador, parche, shampoo, locion, enema, pasta, aerosol, liquido,crema, polvo para solucion oral, polvo para suspension oral)
+                , si no existe el dato para la columna concentracion intenta extraerlo de la descripcion,
                 
                 si no existe el dato para la columna presentacion intenta extraerlo de la descripcion,pero manten la descripcion con el nombre original 
                 para el valor manten que sea un dato numerico y que no tenga \n1
                 Hazlo tu no me entregues codigo {df}""" + """
-                    ,requiero que la salida tenga esta estructura, haz todos los items
+                    ,requiero que la salida tenga esta estructura , si o si siempre la debe tener, haz todos los items
 
                     [
                         {
                             'item': '1',
                             'Descripcion': 'Acetaminofen',
                             'Concentracion': '500mg',
-                            'Presentacion': 'Caja',
+                            'Forma_farmaceutica': 'Tableta',
                             'Laboratorio': 'Genfar',
                             'Valor_Unitario': 125
                         },
@@ -76,7 +79,7 @@ def process_document_form_sample(
                             'item': '2',
                             'Descripcion': 'Amoxicilina',
                             'Concentracion': '250mg',
-                            'Presentacion': 'Caja',
+                            'Forma_farmaceutica': 'Capsula',
                             'Laboratorio': 'Aust',
                             'Valor_Unitario': 90
                         }
@@ -84,13 +87,14 @@ def process_document_form_sample(
                     ]
                     si el dataframe no correspode a medicamentos solo devuelve {}
                 """, model="gpt-3.5-turbo")
-
+                print(respuesta)
                 data_list = ast.literal_eval(respuesta)
                 df = pd.DataFrame(data_list)
-                df['file_path'] = file_path
+                print(df)
                 all_df = pd.concat([all_df, df], ignore_index=True)
+    all_df = all_df.applymap(lambda x: x.upper() if isinstance(x, str) else x)
+    all_df['file_path'] = file_path
     return all_df
-
 
 def print_table_rows(
     table_rows: Sequence[documentai.Document.Page.Table.TableRow], text: str
@@ -154,4 +158,5 @@ def layout_to_text(layout: documentai.Document.Page.Layout, text: str) -> str:
     )
 
 df = process_document_form_sample(project_id, location, processor_id, processor_version, file_path, mime_type)
-print(df)
+bq = bigquery_loader.Loader()
+bq.load_bigquery_df(df, "utadeo-418221.SECOP.detalle_contratos","WRITE_APPEND")
