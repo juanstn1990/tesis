@@ -12,7 +12,7 @@ from src.shared.loaders import bigquery_loader
 project_id = 'utadeo-418221'
 location = 'us'
 processor_id = '96b58070c12117b2'
-file_path = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf'
+file_path = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdfx'
 mime_type = 'application/pdf'
 processor_version = 'pretrained-form-parser-v2.1-2023-06-26'
 
