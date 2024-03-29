@@ -36,8 +36,7 @@ def analyze_layout(path_to_sample_documents):
                     table_data[row_index][column_index] = content
                 df = pd.DataFrame.from_dict(table_data, orient="index").sort_index(axis=1)
                 df = df.apply(lambda x: x.str.replace('\n', ''))
-                print(df)
-                results = get_completion(df)
+                results = get_completion(df_transform.format(dataframe=df))
                 print(results)
 
 if __name__ == "__main__":
