@@ -30,5 +30,5 @@ requiero que la salida tenga esta estructura , si o si siempre la debe tener, ha
     }}
     ]]
 
-    si el dataframe no correspode a medicamentos solo devuelve blano
+    si el dataframe no correspode a medicamentos solo devuelve {{}}
 """
