@@ -7,10 +7,10 @@ import time
 api_key = os.getenv("CHAT_GPT")
 openai.api_key = api_key
 
-def get_completion(prompt, model="gpt-3.5-turbo"):
+def get_completion(prompt):
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
-        model=model,
+        model="gpt-3.5-turbo",
         messages=messages,
         temperature=0,
     )
