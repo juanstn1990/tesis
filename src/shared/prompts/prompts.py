@@ -10,25 +10,25 @@ Hazlo tu no me entregues codigo {dataframe}
 
 requiero que la salida tenga esta estructura , si o si siempre la debe tener, haz todos los items
 
-    [
-        {
-            'item': '1',
+    [[
+        {{
+            'Item': '1',
             'Descripcion': 'Acetaminofen',
             'Concentracion': '500mg',
             'Forma_farmaceutica': 'Tableta',
             'Laboratorio': 'Genfar',
             'Valor_Unitario': 125
-        },
-        {
-            'item': '2',
+        }},
+        {{
+            'Item': '2',
             'Descripcion': 'Amoxicilina',
             'Concentracion': '250mg',
             'Forma_farmaceutica': 'Capsula',
             'Laboratorio': 'Aust',
             'Valor_Unitario': 90
-        }
-    }
-    ]
+        }}
+    }}
+    ]]
 
     si el dataframe no correspode a medicamentos solo devuelve blano
 """

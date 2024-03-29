@@ -12,7 +12,7 @@ from src.shared.loaders import bigquery_loader
 project_id = 'utadeo-418221'
 location = 'us'
 processor_id = '96b58070c12117b2'
-file_path = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdfx'
+file_path = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf'
 mime_type = 'application/pdf'
 processor_version = 'pretrained-form-parser-v2.1-2023-06-26'
 
@@ -54,7 +54,7 @@ def process_document_form_sample(
                     df_headers = print_table_rows(table.header_rows, text)
                     df_rows = print_table_rows(table.body_rows, text)
                     df = df_headers + df_rows
-
+                print(df)
                 respuesta = get_completion(f"""
                 organiza esto en un dataframe, crea la siguientes columnas
                 item, Descripcion, Concentracion, laboratorio , valor
@@ -86,7 +86,7 @@ def process_document_form_sample(
                     }
                     ]
                     si el dataframe no correspode a medicamentos solo devuelve {}
-                """, model="gpt-3.5-turbo")
+                """)
                 print(respuesta)
                 data_list = ast.literal_eval(respuesta)
                 df = pd.DataFrame(data_list)

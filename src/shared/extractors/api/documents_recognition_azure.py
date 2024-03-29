@@ -37,14 +37,9 @@ def analyze_layout(path_to_sample_documents):
                 df = pd.DataFrame.from_dict(table_data, orient="index").sort_index(axis=1)
                 df = df.apply(lambda x: x.str.replace('\n', ''))
                 print(df)
-                headers = df.iloc[0].tolist()
-                # Formatea la cadena df_transform con el dataframe actualizado
-                formatted_df = df_transform.format(dataframe=df)
-
-                # Llama a la función get_completion con la cadena formateada
-                results = get_completion(formatted_df)
+                results = get_completion(df)
                 print(results)
 
 if __name__ == "__main__":
-    filepath = r'/tmp/C_PROCESO_19-4-9750833_22587527_61531123.pdf'
+    filepath = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf'
     analyze_layout(filepath)
