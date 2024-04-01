@@ -40,5 +40,5 @@ def analyze_layout(path_to_sample_documents):
                 print(results)
 
 if __name__ == "__main__":
-    filepath = r'/tmp/C_PROCESO_21-12-12645260_276001622_98573431.pdf'
+    filepath = r'/tmp/C_PROCESO_19-4-9750833_22587527_61531123.pdf'
     analyze_layout(filepath)
