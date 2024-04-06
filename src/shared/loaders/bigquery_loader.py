@@ -1,4 +1,5 @@
 from google.cloud import bigquery
+
 class Loader:
     def __init__(self):
         pass

@@ -1,10 +1,14 @@
 import os
 import pandas as pd
+
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.ai.documentintelligence.models import AnalyzeResult
+
 from shared.prompts.prompts import df_transform
 from shared.transformer.chat_gpt import get_completion
+from shared.cloud_storage import CloudStorage
+from shared.loaders.bigquery_loader import Loader
 
 
 endpoint = "https://utadeo.cognitiveservices.azure.com/"
@@ -39,6 +43,15 @@ def analyze_layout(path_to_sample_documents):
                 results = get_completion(df_transform.format(dataframe=df))
                 print(results)
 
+def main():
+    cloud = CloudStorage()
+    lista = cloud.list_files_in_gcs("pdfs_utadeo", "pdfs/")
+    lista.remove("pdfs/")
+    for element in lista:
+        destino = f"/home/juanstn/{element.split('/')[-1]}"
+        print(destino)
+        cloud.download_blob("pdfs_utadeo", element, destino)
+        analyze_layout(destino)
+        os.remove(destino)
 if __name__ == "__main__":
-    filepath = r'/tmp/C_PROCESO_19-4-9750833_22587527_61531123.pdf'
-    analyze_layout(filepath)
+    main()
