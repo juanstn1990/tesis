@@ -10,7 +10,7 @@ def main():
     
     #loading
     bq = bigquery_loader.Loader()
-    bq.load_bigquery_df(df, "utadeo-418221.SECOP.secop")
+    bq.load_bigquery_df(df, "artful-sled-419501.secop.secop","WRITE_TRUNCATE")
 
 if __name__ == "__main__":
     main()
