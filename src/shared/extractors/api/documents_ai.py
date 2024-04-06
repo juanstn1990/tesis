@@ -89,9 +89,11 @@ def process_document_form_sample(
                 """)
                 print(respuesta)
                 data_list = ast.literal_eval(respuesta)
+                
                 df = pd.DataFrame(data_list)
                 print(df)
                 all_df = pd.concat([all_df, df], ignore_index=True)
+
     all_df = all_df.applymap(lambda x: x.upper() if isinstance(x, str) else x)
     all_df['file_path'] = file_path
     return all_df
