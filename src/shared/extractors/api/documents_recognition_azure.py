@@ -9,6 +9,7 @@ from shared.prompts.prompts import df_transform
 from shared.transformer.chat_gpt import get_completion
 from shared.cloud_storage import CloudStorage
 from shared.loaders.bigquery_loader import Loader
+from shared.extractors.api.bigquery_extractor import Extractor
 
 
 endpoint = "https://utadeo.cognitiveservices.azure.com/"
@@ -47,11 +48,29 @@ def main():
     cloud = CloudStorage()
     lista = cloud.list_files_in_gcs("pdfs_utadeo", "pdfs/")
     lista.remove("pdfs/")
-    for element in lista:
-        destino = f"/home/juanstn/{element.split('/')[-1]}"
-        print(destino)
-        cloud.download_blob("pdfs_utadeo", element, destino)
-        analyze_layout(destino)
-        os.remove(destino)
+    df_storage = pd.DataFrame()
+    df_storage["file_path"] = lista
+    df_storage["flag"] = 0
+
+    Extract = Extractor()
+    df_bigquery = Extract.extract_bigquery("artful-sled-419501.secop.pdf_control")
+    nuevos_pdfs = df_storage[~df_storage["file_path"].isin(df_bigquery["file_path"])]
+    
+    if not nuevos_pdfs.empty:
+        load = Loader()
+        load.load_bigquery_df(nuevos_pdfs, "artful-sled-419501.secop.pdf_control", "WRITE_APPEND")
+
+    df_bigquery_new = Extract.extract_bigquery_flag("artful-sled-419501.secop.pdf_control")
+    if not df_bigquery_new.empty:
+        for row in df_bigquery_new.itertuples():
+            print(row.file_path)
+            destino = f"/home/juanstn/{row.file_path.split('/')[-1]}"
+            cloud.download_blob("pdfs_utadeo", row.file_path, destino)
+            analyze_layout(destino)
+            Extract.update_bigquery("artful-sled-419501.secop.pdf_control", "flag", 1, f"file_path = '{row.file_path}'")
+            os.remove(destino)
+    else:
+        print("No hay nuevos archivos para procesar")
+
 if __name__ == "__main__":
     main()
