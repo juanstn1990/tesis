@@ -4,7 +4,7 @@ y forma farmaceutica (tableta, capsula, jarave, solucion oral, solucion inyectab
 , si no existe el dato para la columna concentracion intenta extraerlo de la descripcion,
 
 si no existe el dato para la columna presentacion intenta extraerlo de la descripcion,pero manten la descripcion con el nombre original 
-para el valor manten que sea un dato numerico
+para el valor manten que sea un dato numerico si no encuentras un valor pon 0, ten encuenta que algunas veces el valor trae una , o un . pero no significa que sea un flotante
 
 Hazlo tu no me entregues codigo {dataframe}
 

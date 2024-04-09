@@ -39,7 +39,7 @@ def analyze_layout(path_to_sample_documents):
         all_tables = pd.DataFrame()
         for table_idx, table in enumerate(result.tables):
             print(f"Table # {table_idx} has {table.row_count} rows and {table.column_count} columns")
-            if table.row_count > 3:
+            if table.column_count > 3:
                 table_data = {}
                 for cell in table.cells:
                     row_index = cell.row_index
@@ -53,16 +53,22 @@ def analyze_layout(path_to_sample_documents):
                 df = df.apply(lambda x: x.str.replace('\n', ''))
                 df = df.apply(lambda x: x.str.replace("'", ''))
                 df = df.apply(lambda x: x.str.replace('"', ''))
+                df = df.apply(lambda x: x.str.replace('.', ''))
+                df = df.apply(lambda x: x.str.replace(',', ''))
+                print(df)
                 results = get_completion(df_transform.format(dataframe=df))
+                print(results)
                 data_list = ast.literal_eval(results)
                 df_lista = pd.DataFrame(data_list)
                 all_tables = pd.concat([all_tables, df_lista], ignore_index=True)
         all_tables = all_tables.applymap(lambda x: x.upper() if isinstance(x, str) else x)
+        all_tables['source']=path_to_sample_documents
         return all_tables
 
 def main():
     cloud = CloudStorage()
     lista = cloud.list_files_in_gcs("pdfs_utadeo", "pdfs/")
+    print(lista)
     lista.remove("pdfs/")
     df_storage = pd.DataFrame()
     df_storage["file_path"] = lista
@@ -86,7 +92,7 @@ def main():
             print(df_to_load)
 
             if not df_to_load.empty:
-                load.load_bigquery_df(df_to_load, "artful-sled-419501.secop.detalle_contratos", "WRITE_TRUNCATE")
+                load.load_bigquery_df(df_to_load, "artful-sled-419501.secop.detalle_contratos", "WRITE_APPEND")
 
             Extract.update_bigquery("artful-sled-419501.secop.pdf_control", "flag", 1, f"file_path = '{row.file_path}'")
             os.remove(destino)
