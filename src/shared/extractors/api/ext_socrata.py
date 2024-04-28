@@ -5,14 +5,13 @@ import os
 class SocrataData:
     def __init__(self):
         self.api_key = os.getenv("TOKEN_SOCRATA")
-        #self.url='https://www.datos.gov.co/resource/f789-7hwg.json?departamento_entidad=Cundinamarca'
-        self.url="https://www.datos.gov.co/resource/f789-7hwg.json?$where=municipio_entidad in ('Tabio')"
-
         self.limit = 1000
         self.offset = 0
         
 
-    def extract_data(self):
+    def extract_data(self, year):
+        self.url=f"https://www.datos.gov.co/resource/f789-7hwg.json?$where=anno_firma_contrato in ('{year}')"
+
         all_data = pd.DataFrame()
         while True:
             params = {
