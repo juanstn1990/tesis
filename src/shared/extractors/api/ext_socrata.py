@@ -5,13 +5,12 @@ import os
 class SocrataData:
     def __init__(self):
         self.api_key = os.getenv("TOKEN_SOCRATA")
-        self.limit = 1000
+        self.limit = 50000
         self.offset = 0
         
 
-    def extract_data(self, year):
-        self.url=f"https://www.datos.gov.co/resource/f789-7hwg.json?$where=anno_firma_contrato in ('{year}')"
-
+    def extract_data(self, first_date,last_date):
+        self.url=f"https://www.datos.gov.co/resource/f789-7hwg.json?$where=fecha_de_cargue_en_el_secop between '{first_date}' and '{last_date}'"
         all_data = pd.DataFrame()
         while True:
             params = {
@@ -20,7 +19,7 @@ class SocrataData:
                 "$$app_token": self.api_key
             }
             response = requests.get(self.url, params=params)
-            print(response)
+            print(response.status_code)
             if response.status_code == 200:
                 data = response.json()
                 df = pd.DataFrame(data)
@@ -31,5 +30,4 @@ class SocrataData:
             else:
                 print("Error:", response.status_code)
                 break
-
         return all_data
