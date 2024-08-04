@@ -90,6 +90,7 @@ def main():
             cloud.download_blob("pdfs_utadeo", row.file_path, destino)
             df_to_load = analyze_layout(destino)
             print(df_to_load)
+            df_to_load['EXTRACTED_AT'] = pd.Timestamp.now()
 
             if not df_to_load.empty:
                 load.load_bigquery_df(df_to_load, "artful-sled-419501.secop.detalle_contratos", "WRITE_APPEND")
