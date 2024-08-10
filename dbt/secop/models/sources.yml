@@ -1,84 +1,9 @@
+version: 2
+
 sources:
-  - name: FINKARGO_CO
-    meta:
-      external_location: "s3://data-finkargo-lz/internal/PSQL/Finkargo/{name}/*/*/*.snappy.parquet"
+  - name: secop
+    schema: secop  # Dataset en BigQuery
+    database: artful-sled-419501   # ID del proyecto en BigQuery
     tables:
-      - name: Associate
-      - name: Bank
-      - name: City
-      - name: Company
-      - name: Country
-      - name: CreditRequest
-      - name: Currency
-      - name: DecisionCommittee
-      - name: Economic
-      - name: finkargo_audit_ddl
-      - name: FrameworkContract
-      - name: Incoterm
-      - name: Operation
-      - name: OperationBanks
-      - name: OperationEvent
-      - name: OperationInvoice
-      - name: OperationProviders
-      - name: OperationTariffPosition
-      - name: Port
-      - name: Provider
-      - name: ProviderBank
-      - name: ProviderContact
-      - name: Rate
-      - name: Status
-      - name: TariffPosition
-      - name: Type
-      - name: User
-
-  - name: PORTFOLIO_CO
-    meta:
-      external_location: "s3://data-finkargo-lz-dev/internal/PSQL/Portfolio/{name}/*/*/*.snappy.parquet"
-    tables:
-      - name: account
-      - name: agent
-      - name: bank
-      - name: category
-      - name: company
-      - name: condonation
-      - name: currency
-      - name: current_rate
-      - name: daily_closure
-      - name: default_rate
-      - name: disbursement_approval
-      - name: disbursement_record
-      - name: disbursement_write_off
-      - name: disbursement
-      - name: django_migrations
-      - name: extra_cost_disbursements
-      - name: fixed_cost_disbursements
-      - name: invoice
-      - name: loan_request
-      - name: payment
-      - name: product
-      - name: status
-      - name: substatus
-      - name: transaction
-      - name: trm
-      - name: type
-
-  - name: MASTER_CO
-    meta:
-      external_location: "s3://data-finkargo-lz-dev/internal/PSQL/Master/{name}/*/*/*.snappy.parquet"
-    tables:
-      - name: cities
-      - name: countries
-      - name: ports
-
-  - name: MARKETPLACE_CO
-    meta:
-      external_location: "s3://data-finkargo-lz-dev/internal/PSQL/Marketplace/{name}/*/*/*.snappy.parquet"
-    tables:
-      - name: acquired_insurance_details
-      - name: acquired_insurances
-
-  - name: GENERAL_CO
-    meta:
-      external_location: "s3://data-finkargo-lz-dev/internal/PSQL/General/{name}/*/*/*.snappy.parquet"
-    tables:
-      - name: nps
+      - name: pdf_control        # Nombre de la tabla en BigQuery
+      - name: secop            # Nombre de la tabla en BigQuery

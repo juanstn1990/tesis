@@ -1,9 +1,8 @@
-name: 'finkargo'
+name: 'secop'
 version: '1.0.0'
 config-version: 2
 
-profile: 'duckdb_fk'
-
+profile: 'secop'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -17,22 +16,25 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  namespace_dns: 6ba7b810-9dad-11d1-80b4-00c04fd430c8
-  execution_date: "2024-01-01"
+  dataset_bq: artful-sled-419501.secop
+  normalize_function: '`artful-sled-419501`.secop.normalize_text'
   macro_path: 'macros/'
 
-on-run-start:
-    - '{{create_udfs()}}'
-      
+     
 models:
-  finkargo:
-    duckdb:
-      tags: [duckdb]
+  secop:
+    bigquery:
+      tags: [bigquery]
       aux_tables:
         materialized: table
         tags: [aux_tables]
       dimensions:
         materialized: table
-        post_hook: "{{ export_to_parquet(this.table) }}"
-        tags: [aux_tables]
+        tags: [dimensions]
+      facts:
+        materialized: table
+        tags: [facts]
+      trans_views:
+        materialized: view
+        tags: [views]
 
