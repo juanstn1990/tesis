@@ -9,7 +9,7 @@ SELECT
 
     -- Entidad
 
-    ,COALESCE(DE.c_digo_de_la_entidad,'SIN_CODIGO')                                 AS entidad_id
+    ,COALESCE(c_digo_de_la_entidad,'SIN_CODIGO')                                    AS entidad_id
 
     -- Modalidad y Contratación
     , id_modalidad                                                      AS id_modalidad                  
@@ -28,7 +28,7 @@ SELECT
                                                                         AS identificacion_del_contratista
 
     -- Detalles del Contrato
-    , CAST(column_plazo_de_ejec_del_contratoname AS INT64)              AS plazo_de_ejec_del_contrato           
+    , CAST(plazo_de_ejec_del_contrato AS INT64)                         AS plazo_de_ejec_del_contrato           
     , rango_de_ejec_del_contrato                                        AS rango_de_ejec_del_contrato       
     , CAST(tiempo_adiciones_en_dias AS INT64)                           AS tiempo_adiciones_en_dias
     , CAST(tiempo_adiciones_en_meses AS INT64)                          AS tiempo_adiciones_en_meses     
