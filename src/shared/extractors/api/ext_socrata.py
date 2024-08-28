@@ -10,7 +10,9 @@ class SocrataData:
         
 
     def extract_data(self, first_date,last_date):
-        self.url=f"https://www.datos.gov.co/resource/f789-7hwg.json?$where=fecha_de_cargue_en_el_secop between '{first_date}' and '{last_date}'"
+        #self.url=f"https://www.datos.gov.co/resource/f789-7hwg.json?$where=fecha_de_cargue_en_el_secop between '{first_date}' and '{last_date}'"
+        self.url=f"https://www.datos.gov.co/resource/p6dx-8zbt.json?$where=fecha_de_publicacion_del between '{first_date}' and '{last_date}'"
+        #self.url=f"https://www.datos.gov.co/resource/qmzu-gj57.json?$where=fecha_creacion between '{first_date}' and '{last_date}'"
         all_data = pd.DataFrame()
         while True:
             params = {

@@ -10,7 +10,7 @@ def create_trimesters(initial_date, last_date):
     
     while initial_date < last_date:
         trimester_start = initial_date.strftime("%Y-%m-%d")
-        trimester_end = (initial_date + datetime.timedelta(days=89)).strftime("%Y-%m-%d")  # 90 days - 1 day for the end of the trimester
+        trimester_end = (initial_date + datetime.timedelta(days=7)).strftime("%Y-%m-%d")  # 90 days - 1 day for the end of the trimester
         
         # Append the trimester with the adjusted time
         trimesters.append({
@@ -19,6 +19,6 @@ def create_trimesters(initial_date, last_date):
         })
         
         # Move to the start of the next trimester (add 90 days)
-        initial_date = initial_date + datetime.timedelta(days=90)
+        initial_date = initial_date + datetime.timedelta(days=8)
     
     return trimesters

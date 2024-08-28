@@ -7,3 +7,4 @@ sources:
     tables:
       - name: pdf_control        # Nombre de la tabla en BigQuery
       - name: secop            # Nombre de la tabla en BigQuery
+      - name: secop_2
